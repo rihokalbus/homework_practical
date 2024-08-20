@@ -51,6 +51,11 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# CLion and build directories
+# Files and directories produced by CLion and cmake
 .idea/
 cmake-build-debug/
+CMakeFiles/
+*.cmake
+Makefile
+install_manifest.txt
+CMakeCache.*
