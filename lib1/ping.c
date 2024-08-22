@@ -1,20 +1,20 @@
 #include <errno.h>
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include "strutil.h"
 #include <threads.h>
 #include <unistd.h>
 
 #include "../include/config.h"
-#include "udp_sock.h"
+#include "strutil.h"
 #include "ping.h"
 
-#include <pthread.h>
+#include <assert.h>
 
-#include "ping_pong_size.h"
+#include "udp_sock.h"
 
 static void comm_error(const int n, char *mod_name, char *fun_name) {
     char szLog[LOG_MAX_Z];
@@ -43,6 +43,7 @@ static void comm_error(const int n, char *mod_name, char *fun_name) {
 
 // Set next alarm time for TIMER_ABSTIME, keeps tv_nsec under 1 second
 static void next_deadline(struct timespec *pdst) {
+    assert(pdst != NULL);
     pdst->tv_nsec += MONITOR_SLEEP * 1000000; // to nanoseconds
     while (pdst->tv_nsec >= TV_NSEC_PER_SEC) {
         pdst->tv_nsec -= TV_NSEC_PER_SEC;
@@ -52,6 +53,7 @@ static void next_deadline(struct timespec *pdst) {
 
 // Returns time difference beetween pstop and pstart in milliseconds (floating point format)
 static float time_diff(const struct timespec *pstop, const struct timespec *pstart) {
+    assert(pstop != NULL && pstart != NULL);
     return (TV_NSEC_PER_SEC * (pstop->tv_sec - pstart->tv_sec) + pstop->tv_nsec - pstart->tv_nsec) * TV_MS_PER_NS;
 }
 
@@ -101,7 +103,8 @@ void *pingThread(void *pArgs) {
                 // interrupted by the signal, wrap it up
                 close(iSockFd);
                 return pResult;
-            } else if (rc != 0) {
+            }
+            if (rc != 0) {
                 perror("nanosleep failed");
             }
         }
@@ -136,11 +139,11 @@ void *pingThread(void *pArgs) {
 
         if(strncmp(buffer, PONG, strlen(PONG)) == 0)
             log_format(
-                szLog, sizeof(szLog) - 1, INFO, pA->szModuleName, "%s (%s)ms", buffer, timebuf
+                szLog, sizeof(szLog) - 1, INFO, pA->szModuleName, "%s (%sms)", buffer, timebuf
                 );
         else
             log_format(
-                szLog, sizeof(szLog) - 1, ERROR, pA->szModuleName, "Unknown response: %s (%s)ms", buffer, timebuf
+                szLog, sizeof(szLog) - 1, ERROR, pA->szModuleName, "Unknown response: %s (%sms)", buffer, timebuf
                 );
         printf("%s\n", szLog);
     } while( *pA->pUp );

@@ -2,6 +2,7 @@
 #define PONG_H
 
 #include "ping_pong_def.h"
+#include "ping_pong_size.h"
 
 /*
  * pong thread
