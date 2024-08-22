@@ -1,13 +1,10 @@
 #include <stdio.h>
-
 #include <pthread.h>
 #include <signal.h>
-#include <netinet/in.h>
 #include <stdlib.h>
 
 #include "../include/config.h"
 #include "../lib1/strutil.h"
-#include "../lib1/ping_pong_def.h"
 #include "../lib1/pong.h"
 
 const char szModule[] = "Cooling";
