@@ -60,3 +60,6 @@ Makefile
 install_manifest.txt
 CMakeCache.*
 *.swp
+CTestCostData.txt
+LastTest.log
+/Testing/
