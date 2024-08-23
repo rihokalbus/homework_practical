@@ -25,14 +25,14 @@ int main(void) {
 
     MONITOR_ARG pong = {.addr = POWERPACK_ADDR, .iPort = POWERPACK_PORT, .pUp = (__sig_atomic_t*)&up };
     if (pthread_create(&pong.tid, NULL, pongThread, &pong)) {
-        perror("pthread_create failed");
+        perror("pongThread: pthread_create failed");
         return EXIT_FAILURE;
     }
 
     // TODO some powerpack functionality
 
     if (pthread_join(pong.tid, &pRes)) {
-            perror("pthread_join failed");
+            perror("pongThread: pthread_join failed");
     }
     free(pRes);
 

@@ -39,15 +39,18 @@ int main(void) {
     const int iMaxThreads = sizeof(monitors) / sizeof(MONITOR_ARG);
 
     for (int i = 0; i < iMaxThreads; i++) {
+        printf("Ping thread %s: ", monitors[i].szModuleName);
         if (pthread_create(&monitors[i].tid, NULL, pingThread, &monitors[i])) {
             perror("pthread_create failed");
             return EXIT_FAILURE;
         }
+        printf("OK\n");
     }
     // TODO some drive functionality maybe?
 
     for (int i = 0; i <  iMaxThreads; i++) {
         if (pthread_join(monitors[i].tid, &pRes)) {
+            printf("Ping thread %s: ", monitors[i].szModuleName);
             perror("pthread_join failed");
         }
         free(pRes);

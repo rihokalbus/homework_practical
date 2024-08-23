@@ -14,6 +14,22 @@ As a demonstration, four subprojects have been implemented during the project - 
   * On communication error or on timeout.
 * Cooling and powerpack will write to standard output:
   * On receiving ping.
+## Prpject structure
+```
+.
+├── cooling
+│   └── Cooling project files
+├── drive
+│   └── Drive project files
+├── include
+│   └── config.h - Common settings (timeouts, addresses)
+├── lib1
+│   ├── Library project files
+│   ├── tests
+│   │   ├── Library tests
+└── powerpack
+    └── Powerpack project files
+```
 ## Building project
 In the main directory:
 ```
