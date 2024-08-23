@@ -39,7 +39,7 @@ int main(void) {
     const int iMaxThreads = sizeof(monitors) / sizeof(MONITOR_ARG);
 
     for (int i = 0; i < iMaxThreads; i++) {
-        printf("Ping thread %s: ", monitors[i].szModuleName);
+        printf("Ping thread %s start: ", monitors[i].szModuleName);
         if (pthread_create(&monitors[i].tid, NULL, pingThread, &monitors[i])) {
             perror("pthread_create failed");
             return EXIT_FAILURE;
