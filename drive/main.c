@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <unistd.h>
 
 #include "../include/config.h"
 #include "../lib1/strutil.h"
@@ -26,7 +27,12 @@ static void sig(int __sig) {
 int main(void) {
     void *pRes;
 
-    if (signal(SIGINT, sig) == SIG_ERR) {
+    struct sigaction sa;
+    bzero(&sa, sizeof(sa));
+    sa.sa_handler = sig;
+    sa.sa_flags = SA_RESTART;
+
+    if (sigaction(SIGINT, &sa, NULL) != 0) {
         perror("signal handler not set");
         return EXIT_FAILURE;
     }
